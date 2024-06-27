@@ -1,44 +1,44 @@
 -- 1. List the employee number, last name, first name, sex, and salary of each employee.
 SELECT
-	employees.emp_no, employees.last_name, employees.first_name, employees.sex, salaries.salary
+	emp.emp_no, emp.last_name, emp.first_name, emp.sex, wage.salary
 FROM
-	employees
+	emp
 JOIN 
-	salaries ON employees.emp_no = salaries.emp_no;
+	wage ON emp.emp_no = wage.emp_no;
 
 -- 2. List the first name, last name, and hire date for the employees who were hired in 1986.
 SELECT 	
 	first_name, last_name, hire_date
 FROM 	
-	employees
+	emp
 WHERE 	
 	hire_date BETWEEN '$1986-01-01' AND '$1986-12-31';
 
 -- 3. List the manager of each department along with their department number, department name, employee number, last name, and first name.
 SELECT
-	department.dept_no, department.dept_name, employees.emp_no, employees.last_name, employees.first_name
+	dept.dept_no, dept.dept_name, emp.emp_no, emp.last_name, emp.first_name
 FROM 
-	departmentmanager as d
+	dept_mgr as d
 JOIN
-	department ON d.dept_no = department.dept_no
+	dept ON d.dept_no = dept.dept_no
 JOIN	
-	employees ON d.emp_no = employees.emp_no;
+	emp ON d.emp_no = emp.emp_no;
 
 -- 4. List the department number for each employee along with that employee’s employee number, last name, first name, and department name.
 SELECT
-	department.dept_no, department.dept_name, employees.emp_no, employees.last_name, employees.first_name
+	dept.dept_no, dept.dept_name, emp.emp_no, emp.last_name, emp.first_name
 FROM 
-	departmentemployee as d
+	dept_emp as d
 JOIN
-	department ON d.dept_no = department.dept_no
+	dept ON d.dept_no = dept.dept_no
 JOIN	
-	employees ON d.emp_no = employees.emp_no;
+	emp ON d.emp_no = emp.emp_no;
 
 -- 5. List first name, last name, and sex of each employee whose first name is Hercules and whose last name begins with the letter B.
 SELECT
 	first_name, last_name, sex
 FROM
-	employees
+	emp
 WHERE
 	first_name = 'Hercules' AND last_name LIKE 'B%';
 
@@ -46,44 +46,43 @@ WHERE
 SELECT
 	emp_no, last_name, first_name
 FROM 
-	employees
+	emp
 WHERE 
 	emp_no IN 
 (
 	SELECT 
 		emp_no
 	FROM 
-		departmentemployee
+		dept_emp
 	WHERE
 		dept_no IN 
 	(
 		SELECT
 			dept_no
 		FROM
-			department
+			dept
 		WHERE
 			dept_name = 'Sales'
 	)
 );
 
 -- 7. List each employee in the Sales and Development departments, including their employee number, last name, first name, and department name.
-SELECT * FROM departmentemployee;
 SELECT
-	employees.emp_no, employees.last_name, employees.first_name, department.dept_name
+	emp.emp_no, emp.last_name, emp.first_name, dept.dept_name
 FROM
-	departmentemployee as d
+	dept_emp as d
 JOIN
-	employees ON d.emp_no = employees.emp_no
+	emp ON d.emp_no = emp.emp_no
 JOIN
-	department on d.dept_no = department.dept_no
+	dept on d.dept_no = dept.dept_no
 WHERE
-	department.dept_name = 'Sales' OR department.dept_name = 'Development';
+	dept.dept_name = 'Sales' OR dept.dept_name = 'Development';
 
 -- 8. List the frequency counts, in descending order, of all the employee last names (that is, how many employees share each last name).
 SELECT DISTINCT
 	last_name, COUNT(last_name) as "Count of Last Name"
 FROM
-	employees
+	emp
 GROUP BY
 	last_name
 ORDER BY

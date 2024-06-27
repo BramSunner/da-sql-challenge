@@ -1,0 +1,34 @@
+emp
+--
+emp_no PK INTEGER
+emp_title CHARACTER(5) FK >- title.title_id
+birth_date DATE
+first_name VARCHAR(50)
+last_name VARCHAR(50)
+sex CHARACTER(1)
+hire_date DATE
+
+title
+--
+title_id PK CHARACTER(5)
+title VARCHAR(50)
+
+dept
+--
+dept_no PK CHARACTER(5)
+dept_name VARCHAR(50)
+
+dept_mgr
+--
+dept_no PK CHARACTER(5) FK >- dept.dept_no
+emp_no PK INTEGER FK >- emp.emp_no
+
+dept_emp
+--
+emp_no PK INTEGER FK >- emp.emp_no
+dept_no PK CHARACTER(5) FK >- dept.dept_no
+
+wage
+--
+emp_no PK INTEGER FK - emp.emp_no
+salary INTEGER
